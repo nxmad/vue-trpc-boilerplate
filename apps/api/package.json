@@ -1,0 +1,23 @@
+{
+	"name": "@monorepo/api",
+	"version": "0.0.1",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "tsx watch src/index.ts",
+		"db:push": "drizzle-kit push:pg"
+	},
+	"dependencies": {
+		"@trpc/server": "^10.45.2",
+		"drizzle-orm": "^0.30.7",
+		"passport": "^0.7.0",
+		"passport-discord": "^0.1.4",
+		"trpc-uwebsockets": "^10.46.0",
+		"uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.43.0"
+	},
+	"devDependencies": {
+		"@types/node": "^20.12.5",
+		"drizzle-kit": "^0.20.14",
+		"tsx": "^4.7.2"
+	},
+	"module": "src/index.js"
+}

@@ -1,0 +1,64 @@
+volumes:
+  pg-data:
+
+networks:
+  backend:
+  overlay:
+    external: true
+    name: ${OVERLAY_NETWORK}
+
+services:
+  vue:
+    restart: always
+    build:
+      context: .
+      target: dev
+      dockerfile: configs/docker/vue.dockerfile
+    working_dir: /app/apps/client
+    volumes:
+      - .:/app
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.${PREFIX}vue.rule=Host(`${HOST}`)
+    networks:
+      overlay:
+
+  api:
+    restart: always
+    build:
+      context: .
+      target: dev
+      dockerfile: configs/docker/trpc.dockerfile
+    working_dir: /app/apps/api
+    user: 1000:1000
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.${PREFIX}api.rule=Host(`${API_HOST}`)
+    networks:
+      backend:
+      overlay:
+
+  db:
+    image: postgres:16
+    restart: always
+    shm_size: 128mb
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    networks:
+      backend:
+
+  adminer:
+    image: adminer
+    restart: always
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.${PREFIX}db.rule=Host(`db.${HOST}`)
+    networks:
+      backend:
+      overlay:

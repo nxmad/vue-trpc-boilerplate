@@ -1,0 +1,12 @@
+{
+	"name": "vue-elysia-bun-monorepo",
+	"private": true,
+	"workspaces": ["apps/*"],
+	"scripts": {
+		"lint": "biome check .",
+		"lint:fix": "biome check . --apply"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.6.4"
+	}
+}
